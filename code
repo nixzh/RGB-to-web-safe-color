@@ -1,0 +1,35 @@
+#include <opencv2/opencv.hpp>
+#include <string>
+#include <iostream>
+
+using namespace cv;
+using namespace std;
+
+int main()
+{
+	char k[100];
+	cout << "请输入图片路径" << endl;
+	cin.getline(k, 100);
+	Mat img1 = imread(k);
+	if (img1.empty())
+	{
+			char m[100];
+			cout << "error!" << endl;
+			return -1;
+	}
+	Mat img2(img1.rows, img1.cols, CV_8UC3);
+	for (int i = 0; i < img1.rows; i++)
+	{
+		for (int j = 0; j < img1.cols; j++)
+		{
+			img2.at<Vec3b>(i, j)[0] = floor((img1.at<Vec3b>(i, j)[0] + 25) / 51) * 51;
+			img2.at<Vec3b>(i, j)[1] = floor((img1.at<Vec3b>(i, j)[1] + 25) / 51) * 51;
+			img2.at<Vec3b>(i, j)[2] = floor((img1.at<Vec3b>(i, j)[2] + 25) / 51) * 51;
+		}
+	}
+	imwrite("F://web safe.tif", img2);
+	imshow("source image", img1);
+	imshow("web safe color image", img2);
+	waitKey();
+	return 0;
+}
